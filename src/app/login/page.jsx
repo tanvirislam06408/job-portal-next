@@ -114,7 +114,7 @@ export default function LoginForm() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-fuchsia-500/5 blur-3xl pointer-events-none" />
 
       {/* Main Glassmorphic Card */}
-      <Card className="w-full max-w-lg p-8 md:p-10 bg-zinc-950/45 border border-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl hover:border-violet-500/20 transition-all duration-500 z-10">
+      <Card className="w-full max-w-lg p-8  md:p-10 bg-zinc-950/45 border border-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl hover:border-violet-500/20 transition-all duration-500 z-10">
         
         {/* Header */}
         <div className="text-center mb-8">

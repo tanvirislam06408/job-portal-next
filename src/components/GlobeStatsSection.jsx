@@ -16,7 +16,7 @@ const text = "find their dream positions.";
 
 const GlobeStatsSection = () => {
   return (
-    <section className="relative w-full py-30 flex flex-col items-center justify-center text-center text-white overflow-hidden mt-30">
+    <section className="relative isolate w-full py-24 flex flex-col items-center justify-center text-center text-white overflow-hidden">
 
       {/* Background Globe Image */}
       <div
