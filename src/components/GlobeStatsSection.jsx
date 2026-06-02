@@ -10,6 +10,10 @@ const stats = [
   { value: "97%", label: "Satisfaction Rate" },
 ];
 
+import { motion } from "framer-motion";
+
+const text = "find their dream positions.";
+
 const GlobeStatsSection = () => {
   return (
     <section className="relative w-full py-30 flex flex-col items-center justify-center text-center text-white overflow-hidden mt-30">
@@ -24,14 +28,44 @@ const GlobeStatsSection = () => {
       <div className="absolute inset-0 bg-black/70" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl px-4">
+      <div className="relative z-10 max-w-5xl px-4 w-full">
 
         <h2 className="text-2xl md:text-4xl font-medium leading-snug">
           Assisting over{" "}
           <span className="font-bold text-white">15,000</span> job seekers{" "}
           <br />
-          find their dream positions.
+          
         </h2>
+
+
+        <div className="flex mt-3 text-center justify-center items-center text-2xl md:text-4xl font-bold">
+          <div className="">
+            {text.split("").map((char, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: index * 0.05,
+                  duration: 0.01,
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </div>
+
+          <motion.span
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+            }}
+            className="ml-1"
+          >
+            |
+          </motion.span>
+        </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-12">
