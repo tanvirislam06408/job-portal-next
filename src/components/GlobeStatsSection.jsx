@@ -48,6 +48,7 @@ const GlobeStatsSection = () => {
                 transition={{
                   delay: index * 0.05,
                   duration: 0.01,
+                  repeat:Infinity
                 }}
               >
                 {char}
