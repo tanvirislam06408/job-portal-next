@@ -6,10 +6,12 @@ import { Card, Button } from "@heroui/react";
 import { EyeClosed, Eye } from "@gravity-ui/icons";
 import Link from "next/link";
 import { signUp, authClient } from "@/lib/auth-client";
+import { Description, Label, Radio, RadioGroup } from "@heroui/react";
 import { FaGoogle } from "react-icons/fa";
 export default function SignupPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState('seeker')
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState({});
@@ -94,6 +96,7 @@ export default function SignupPage() {
         email: formData.email,
         password: formData.password,
         name: formData.name,
+        role: role,
         callbackURL: "/",
       }, {
         onRequest: () => {
@@ -146,7 +149,7 @@ export default function SignupPage() {
 
       {/* Main Glassmorphic Card */}
       <Card className="w-full max-w-lg p-8 md:p-10 bg-zinc-950/45 border border-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl hover:border-violet-500/20 transition-all duration-500 z-10">
-        
+
         {/* Logo and Header */}
         <div className="text-center mb-8">
           <div className="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent text-4xl font-extrabold tracking-tight mb-2">
@@ -173,17 +176,16 @@ export default function SignupPage() {
 
         {/* Signup Form */}
         <form onSubmit={handleSubmit} className="space-y-5 w-full">
-          
+
           {/* Full Name */}
           <div className="w-full flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-zinc-400 ml-1">
               Full Name
             </label>
-            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${
-              errors.name
+            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.name
                 ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
                 : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
-            }`}>
+              }`}>
               <input
                 name="name"
                 type="text"
@@ -203,11 +205,10 @@ export default function SignupPage() {
             <label className="text-xs font-semibold text-zinc-400 ml-1">
               Email Address
             </label>
-            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${
-              errors.email
+            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.email
                 ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
                 : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
-            }`}>
+              }`}>
               <input
                 name="email"
                 type="email"
@@ -222,16 +223,44 @@ export default function SignupPage() {
             )}
           </div>
 
+
+          {/* role options */}
+          <div className="flex flex-col gap-4">
+            <Label>Select a role</Label>
+            <RadioGroup onChange={value => { setRole(value) }} defaultValue="seeker" name="role" orientation="horizontal">
+              <Radio value="seeker">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Job Seeker</Label>
+                </Radio.Content>
+              </Radio>
+              <Radio value="recruiter">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Recruiter</Label>
+                </Radio.Content>
+              </Radio>
+            </RadioGroup>
+          </div>
+
+
+
+
+
+
           {/* Password */}
           <div className="w-full flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-zinc-400 ml-1">
               Password
             </label>
-            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${
-              errors.password
+            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.password
                 ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
                 : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
-            }`}>
+              }`}>
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -275,7 +304,7 @@ export default function SignupPage() {
                 </div>
               </div>
             )}
-            
+
             {errors.password && (
               <p className="text-red-400 text-xs mt-1.5 ml-1">{errors.password}</p>
             )}
@@ -286,11 +315,10 @@ export default function SignupPage() {
             <label className="text-xs font-semibold text-zinc-400 ml-1">
               Confirm Password
             </label>
-            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${
-              errors.confirmPassword
+            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.confirmPassword
                 ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
                 : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
-            }`}>
+              }`}>
               <input
                 name="confirmPassword"
                 type={showPassword ? "text" : "password"}

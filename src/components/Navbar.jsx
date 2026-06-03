@@ -25,7 +25,9 @@ const navItems = [
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
-    const { data: session, isPending } = useSession()
+    const { data: session, isPending } = useSession();
+    console.log(session?.user?.role);
+    
     const user = session?.user
     const router = useRouter()
     const [dropdownOpen, setDropdownOpen] = useState(false)
