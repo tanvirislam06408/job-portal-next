@@ -201,7 +201,7 @@ export default function LoginForm() {
             <Checkbox
               name="rememberMe"
               isSelected={formData.rememberMe}
-              onValueChange={(isSelected) => 
+              onChange={(isSelected) => 
                 setFormData(prev => ({ ...prev, rememberMe: isSelected }))
               }
               classNames={{
