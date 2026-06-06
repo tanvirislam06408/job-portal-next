@@ -1,9 +1,17 @@
 'use server'
 
-export const getCompanyData = async(recruiterId) => {
-    const res=await fetch(`${process.env.NEXT_PUBLIC_URL}/company?recruiterId=${recruiterId}`);
-    const resData=await res.json();
-    console.log("response",resData);
-    
+import { getUserSession } from "../core/session";
+
+export const getCompanyData = async (recruiterId) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/company?recruiterId=${recruiterId}`);
+    const resData = await res.json();
+
     return resData;
 };
+
+
+export const getLoggedInRecruiterCompany = async () => {
+  const user=await getUserSession();
+  const data=await getCompanyData(user?.id);
+  return data;
+}
