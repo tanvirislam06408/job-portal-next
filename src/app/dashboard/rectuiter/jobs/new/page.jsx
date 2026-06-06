@@ -14,7 +14,10 @@ import {
   TextField,
   NumberField,
   Description,
+  toast,
 } from "@heroui/react";
+import { createJobs } from "@/lib/actions/job";
+import { redirect } from "next/navigation";
 
 const MOCK_RECRUITER_COMPANY = {
   id: "comp_987654321",
@@ -37,7 +40,7 @@ export default function CreateJobForm() {
   const [requirements, setRequirements] = useState("");
   const [benefits, setBenefits] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     if (!MOCK_RECRUITER_COMPANY.isApproved) {
@@ -74,6 +77,15 @@ export default function CreateJobForm() {
     };
 
     console.log("Job Post Payload Submitted successfully:", formData);
+    const res=await createJobs(formData);
+    console.log(res);
+    if(res.insertedId){
+      toast.success('Job successfully added');
+      e.target.reset();
+      setIsRemote(false);
+      redirect('/dashboard/rectuiter')
+    }
+    
   };
 
   return (
