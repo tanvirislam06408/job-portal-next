@@ -61,9 +61,9 @@ export default function Navbar() {
     const initial = user?.name ? user.name.charAt(0).toUpperCase() : "?"
 
     return (
-        <header className="relative z-50 bg-black/50 backdrop-blur-xl border-b border-white/10">
+        <header className="relative z-50 bg-black/50 backdrop-blur-xl border-b border-white/10 py-3">
             <div className="px-4">
-                <nav className="container mx-auto flex h-[72px] items-center justify-between">
+                <nav className="container mx-auto  flex h-[72px] items-center justify-between">
                     {/* Logo */}
                     <Link
                         href="/"

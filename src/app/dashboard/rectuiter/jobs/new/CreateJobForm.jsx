@@ -69,6 +69,7 @@ export default function CreateJobForm({companyData}) {
       },
       status: "active",
       isPubliclyVisible: true,
+      createdAt:new Date()
     };
 
     console.log("Job Post Payload Submitted successfully:", formData);
@@ -78,7 +79,7 @@ export default function CreateJobForm({companyData}) {
       toast.success('Job successfully added');
       e.target.reset();
       setIsRemote(false);
-      redirect('/dashboard/rectuiter')
+      redirect('/dashboard/rectuiter/jobs')
     }
     
   };

@@ -1,12 +1,13 @@
 import { Bars, Bell, Envelope, Gear, House, LayoutSideContent, Magnifier, Person } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 export function DashboardSidebar() {
   const navItems = [
     { icon: House, label: "Home", href: "/dashboard/rectuiter" },
     { icon: Magnifier, label: "Jobs", href: "/dashboard/rectuiter/jobs" },
-    { icon: Bell, label: "Add Job", href: "/dashboard/rectuiter/jobs/new" },
+    { icon: IoAddCircleSharp, label: "Add Job", href: "/dashboard/rectuiter/jobs/new" },
     // { icon: Envelope, label: "Messages", href: "/dashboard/rectuiter" },
     { icon: Person, label: "Company Profile", href: "/dashboard/rectuiter/company" },
     { icon: Gear, label: "Settings", href: "/dashboard/rectuiter" },
