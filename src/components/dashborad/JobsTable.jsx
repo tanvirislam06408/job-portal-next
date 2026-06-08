@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { Button, Chip, Table } from "@heroui/react";
 import { FiEye, FiEdit2, FiTrash2 } from "react-icons/fi";
 
@@ -115,12 +116,16 @@ export default function JobsTable({ jobs }) {
 
                 <Table.Cell>
                   <div className="flex items-center gap-2">
-                    <Button isIconOnly size="sm" variant="light">
-                      <FiEye className="text-lg" />
-                    </Button>
-                    <Button isIconOnly size="sm" variant="light">
-                      <FiEdit2 className="text-lg" />
-                    </Button>
+                    <Link href={`/dashboard/rectuiter/jobs/${job._id}`}>
+                      <Button isIconOnly size="sm" variant="light">
+                        <FiEye className="text-lg" />
+                      </Button>
+                    </Link>
+                    <Link href={`/dashboard/rectuiter/jobs/${job._id}`}>
+                      <Button isIconOnly size="sm" variant="light">
+                        <FiEdit2 className="text-lg" />
+                      </Button>
+                    </Link>
                     <Button isIconOnly size="sm" color="danger" variant="light">
                       <FiTrash2 className="text-lg" />
                     </Button>

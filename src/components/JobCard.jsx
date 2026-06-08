@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Clock, MapPin } from "@gravity-ui/icons";
 import { Button, Card, Chip } from "@heroui/react";
 import { LuBriefcaseBusiness, LuCalendarDays } from "react-icons/lu";
+import Link from "next/link";
 
 function timeAgo(date) {
   const diff = Date.now() - new Date(date).getTime();
@@ -32,103 +33,83 @@ export default function JobCard({ cardData }) {
 
   return (
     <Card
-      variant="secondary"
+      variant="flat"
       className="
-      group
-      relative
-      overflow-hidden
-      rounded-[32px]
-      border border-white/[0.06]
-      bg-gradient-to-b from-zinc-950 to-zinc-900
-      p-8
-      shadow-[0_0_0_1px_rgba(255,255,255,0.02),0_20px_50px_rgba(0,0,0,0.45)]
-      transition-all duration-300
-      hover:-translate-y-2
-      hover:border-primary/20
-      hover:shadow-[0_20px_60px_rgba(139,92,246,0.12)]
-    "
+        group
+        relative
+        overflow-hidden
+        rounded-[24px]
+        border border-zinc-800/50
+        bg-zinc-900/40
+        backdrop-blur-md
+        p-6
+        transition-all duration-500 ease-out
+        hover:-translate-y-1.5
+        hover:border-zinc-700
+        hover:bg-zinc-900/80
+        hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7),0_0_50px_-10px_rgba(139,92,246,0.15)]
+      "
     >
-      {/* Accent line */}
-      <div className="absolute left-8 right-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      {/* Decorative Top Hover Glow */}
+      <div className="absolute top-0 left-1/4 -translate-y-1/2 w-1/2 h-20 bg-gradient-to-b from-primary/20 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-      <Card.Header>
+      <Card.Header className="p-0 flex flex-col gap-4">
         <div className="flex w-full items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <Card.Title className="text-2xl font-bold tracking-tight text-white line-clamp-2">
-              {jobInfo.title}
-            </Card.Title>
-
-            <div className="mt-3 flex items-center gap-3 text-sm text-default-400">
-              <span className="font-medium text-default-300">
-                {company.companyName}
-              </span>
-
-              <div className="h-1 w-1 rounded-full bg-default-600" />
-
-              <div className="flex items-center gap-1">
-                <Clock size={12} />
-                {mounted ? timeAgo(createdAt) : "Just now"}
-              </div>
-            </div>
+          {/* Company Initials Avatar / Logo Placeholder */}
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-950 text-base font-bold text-zinc-200 transition-transform duration-500 group-hover:scale-105">
+            {company.companyName?.substring(0, 2).toUpperCase()}
           </div>
 
           <Chip
             radius="full"
+            variant="flat"
             size="sm"
-            className="
-            bg-primary/10
-            text-primary
-            border border-primary/20
-            shrink-0
-          "
+            className="bg-primary/10 text-primary border border-primary/20 text-xs font-medium"
           >
             {jobInfo.category}
           </Chip>
         </div>
+
+        <div className="space-y-1.5">
+          <Card.Title className="text-xl font-semibold tracking-tight text-zinc-100 group-hover:text-white transition-colors line-clamp-1">
+            {jobInfo.title}
+          </Card.Title>
+
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-zinc-400">
+            <span className="font-medium text-zinc-300">
+              {company.companyName}
+            </span>
+            <span className="text-zinc-600">•</span>
+            <div className="flex items-center gap-1 text-zinc-500">
+              <Clock size={13} className="text-zinc-500" />
+              <span>{mounted ? timeAgo(createdAt) : "Just now"}</span>
+            </div>
+          </div>
+        </div>
       </Card.Header>
 
-      <Card.Content className="mt-8 flex flex-wrap gap-3">
-        <Chip
-          radius="full"
-          size="lg"
-          className="
-          bg-white/[0.03]
-          border border-white/[0.08]
-          text-default-300
-        "
-        >
+      {/* Main Metadata Section */}
+      <Card.Content className="p-0 mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-b border-zinc-800/60 py-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-zinc-400">
           <div className="flex items-center gap-1.5">
-            <MapPin size={12} />
-            {jobInfo.location?.isRemote
-              ? "Remote"
-              : `${jobInfo.location?.city}, ${jobInfo.location?.country}`}
+            <MapPin size={14} className="text-zinc-500" />
+            <span>
+              {jobInfo.location?.isRemote
+                ? "Remote"
+                : `${jobInfo.location?.city}, ${jobInfo.location?.country}`}
+            </span>
           </div>
-        </Chip>
+
+          <div className="flex items-center gap-1.5">
+            <LuBriefcaseBusiness size={14} className="text-zinc-500" />
+            <span>{jobInfo.type}</span>
+          </div>
+        </div>
 
         <Chip
-          radius="full"
-          size="lg"
-          className="
-          bg-white/[0.03]
-          border border-white/[0.08]
-          text-default-300
-        "
-        >
-          <div className="flex items-center gap-1.5">
-            <LuBriefcaseBusiness size={12} />
-            {jobInfo.type}
-          </div>
-        </Chip>
-
-        <Chip
-          radius="full"
-          size="lg"
-          className="
-          bg-emerald-500/10
-          border border-emerald-500/20
-          text-emerald-400
-          font-medium
-        "
+          radius="md"
+          size="sm"
+          className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold text-xs tracking-wide"
         >
           {formatSalary(
             jobInfo.salary?.min,
@@ -136,50 +117,39 @@ export default function JobCard({ cardData }) {
             jobInfo.salary?.currency
           )}
         </Chip>
+      </Card.Content>
 
-        {jobInfo.deadline && (
-          <Chip
-            radius="full"
-            size="lg"
-            className="
-            bg-white/[0.03]
-            border border-white/[0.08]
-            text-default-300
-          "
-          >
-            <div className="flex items-center gap-1.5">
-              <LuCalendarDays size={12} />
+      <Card.Footer className="p-0 mt-5 flex items-center justify-between">
+        {jobInfo.deadline ? (
+          <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+            <LuCalendarDays size={13} />
+            <span>
+              Closes{" "}
               {new Date(jobInfo.deadline).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
               })}
-            </div>
-          </Chip>
+            </span>
+          </div>
+        ) : (
+          <div />
         )}
-      </Card.Content>
 
-      <Card.Footer className="mt-10 flex items-center justify-between">
-        <Button
-          variant="light"
+       <div>
+         <Link
+        href={`/jobs/${cardData._id}`}
+          size="sm"
           radius="full"
-          className="
-          px-0
-          text-default-200
-          font-medium
-          group-hover:text-primary
-          transition-colors
-        "
+          className=" flex items-center py-3 rounded-2xl bg-zinc-800  text-zinc-200  font-medium  px-4 hover:bg-primary hover:text-white  transition-all  duration-300 shadow-sm
+          "
         >
           Apply Now
           <ArrowRight
-            size={16}
-            className="ml-2 transition-transform group-hover:translate-x-1"
+            size={14}
+            className="ml-1 transition-transform duration-300 group-hover:translate-x-0.5"
           />
-        </Button>
-
-        <div className="h-10 w-10 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-          <ArrowRight size={14} />
-        </div>
+        </Link>
+       </div>
       </Card.Footer>
     </Card>
   );
