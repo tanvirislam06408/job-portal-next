@@ -17,6 +17,8 @@ import {
   MdOutlineWorkOutline,
 } from "react-icons/md";
 import { useState } from "react";
+import { ArrowRight } from "@gravity-ui/icons";
+import Link from "next/link";
 
 // ─── Badge components ─────────────────────────────────────────────────────────
 
@@ -178,7 +180,18 @@ function JobCard({ job }) {
               {isSenior && <SeniorBadge />}
               {isHot && <HotJobBadge />}
             </div>
+
+            <div className="mt-5 flex items-center justify-end">
+              <Link
+                href={`/jobs/${job._id}`}
+                className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-semibold text-violet-100 transition hover:bg-violet-500/20 hover:text-white"
+              >
+                Apply
+                <ArrowRight size={16} />
+              </Link>
+            </div>
           </div>
+          
         </div>
       </Card.Content>
     </Card>
@@ -413,6 +426,7 @@ export const BrowseJobsClient = ({ initialJobs }) => {
           )}
         </div>
       </div>
+      
     </div>
   );
 };

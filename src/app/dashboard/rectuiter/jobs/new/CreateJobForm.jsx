@@ -72,9 +72,8 @@ export default function CreateJobForm({companyData}) {
       createdAt:new Date()
     };
 
-    console.log("Job Post Payload Submitted successfully:", formData);
     const res=await createJobs(formData);
-    console.log(res);
+   
     if(res.insertedId){
       toast.success('Job successfully added');
       e.target.reset();

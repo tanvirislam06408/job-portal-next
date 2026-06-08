@@ -12,7 +12,7 @@ const statusColorMap = {
 };
 
 export default function JobsTable({ jobs }) {
-  console.log(jobs);
+
   
   const [selectedKeys, setSelectedKeys] = useState(new Set());
 

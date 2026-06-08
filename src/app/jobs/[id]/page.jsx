@@ -17,7 +17,7 @@ const JobsDetailsPage = async ({ params }) => {
         );
     }
 
-    const { jobInfo, jobDescription, company } = jobData;
+    const { jobInfo, jobDescription, company,_id } = jobData;
 
     return (
         <main className="min-h-screen bg-black">
@@ -26,7 +26,7 @@ const JobsDetailsPage = async ({ params }) => {
                 <div className="absolute top-1/3 right-0 w-1/3 h-48 bg-indigo-600/10 blur-[120px] pointer-events-none" />
 
                 <div className="relative max-w-5xl mx-auto px-4 py-8">
-                    <JobHeader jobInfo={jobInfo} companyName={company?.companyName} />
+                    <JobHeader jobInfo={jobInfo} _id={_id} companyName={company?.companyName} />
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
                         <div className="lg:col-span-2 space-y-6">

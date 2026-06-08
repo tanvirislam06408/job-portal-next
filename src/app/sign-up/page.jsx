@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, Button } from "@heroui/react";
 import { EyeClosed, Eye } from "@gravity-ui/icons";
 import Link from "next/link";
@@ -15,6 +15,11 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState({});
+  // get the search params
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
+
+  
 
   const [formData, setFormData] = useState({
     name: "",
@@ -97,7 +102,7 @@ export default function SignupPage() {
         password: formData.password,
         name: formData.name,
         role: role,
-        callbackURL: "/",
+        callbackURL: redirect,
       }, {
         onRequest: () => {
           setLoading(true);
@@ -129,7 +134,7 @@ export default function SignupPage() {
       setLoading(true);
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: redirect,
       });
     } catch (error) {
       console.error("Google signin error:", error);
@@ -183,8 +188,8 @@ export default function SignupPage() {
               Full Name
             </label>
             <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.name
-                ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
-                : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
+              ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
+              : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
               }`}>
               <input
                 name="name"
@@ -206,8 +211,8 @@ export default function SignupPage() {
               Email Address
             </label>
             <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.email
-                ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
-                : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
+              ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
+              : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
               }`}>
               <input
                 name="email"
@@ -258,8 +263,8 @@ export default function SignupPage() {
               Password
             </label>
             <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.password
-                ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
-                : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
+              ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
+              : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
               }`}>
               <input
                 name="password"
@@ -316,8 +321,8 @@ export default function SignupPage() {
               Confirm Password
             </label>
             <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.confirmPassword
-                ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
-                : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
+              ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
+              : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
               }`}>
               <input
                 name="confirmPassword"
@@ -365,7 +370,7 @@ export default function SignupPage() {
         {/* Footer Links */}
         <div className="mt-8 text-center text-sm text-zinc-400">
           Already have an account?{" "}
-          <Link href="/login" className="text-violet-400 font-semibold hover:text-violet-300 hover:underline transition">
+          <Link href={`/login?redirect=${redirect}`} className="text-violet-400 font-semibold hover:text-violet-300 hover:underline transition">
             Login
           </Link>
         </div>

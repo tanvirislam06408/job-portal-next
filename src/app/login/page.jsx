@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, Button, Checkbox } from "@heroui/react";
 import { EyeClosed, Eye } from "@gravity-ui/icons";
 import Link from "next/link";
@@ -17,6 +17,15 @@ export default function LoginForm() {
     password: "",
     rememberMe: false,
   });
+
+  // get the search params
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
+
+
+
+
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -66,7 +75,7 @@ export default function LoginForm() {
       await signIn.email({
         email: formData.email,
         password: formData.password,
-        callbackURL: "/",
+        callbackURL: redirect
       }, {
         onRequest: () => {
           setLoading(true);
@@ -115,7 +124,7 @@ export default function LoginForm() {
 
       {/* Main Glassmorphic Card */}
       <Card className="w-full max-w-lg p-8  md:p-10 bg-zinc-950/45 border border-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl hover:border-violet-500/20 transition-all duration-500 z-10">
-        
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent text-4xl font-extrabold tracking-tight mb-2">
@@ -135,17 +144,16 @@ export default function LoginForm() {
 
         {/* Sign In Form */}
         <form onSubmit={handleSubmit} className="space-y-5 w-full">
-          
+
           {/* Email */}
           <div className="w-full flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-zinc-400 ml-1">
               Email Address
             </label>
-            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${
-              errors.email
+            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.email
                 ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
                 : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
-            }`}>
+              }`}>
               <input
                 name="email"
                 type="email"
@@ -165,11 +173,10 @@ export default function LoginForm() {
             <label className="text-xs font-semibold text-zinc-400 ml-1">
               Password
             </label>
-            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${
-              errors.password
+            <div className={`w-full flex items-center border transition-all duration-300 rounded-2xl h-12 bg-white/5 px-4 focus-within:bg-white/10 ${errors.password
                 ? "border-red-500/50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
                 : "border-white/10 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20"
-            }`}>
+              }`}>
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -201,7 +208,7 @@ export default function LoginForm() {
             <Checkbox
               name="rememberMe"
               isSelected={formData.rememberMe}
-              onChange={(isSelected) => 
+              onChange={(isSelected) =>
                 setFormData(prev => ({ ...prev, rememberMe: isSelected }))
               }
               classNames={{
@@ -245,20 +252,20 @@ export default function LoginForm() {
           isLoading={loading}
           disabled={loading}
         >
-          <span className="text-lg mr-2"><FaGoogle/></span> Continue with Google
+          <span className="text-lg mr-2"><FaGoogle /></span> Continue with Google
         </Button>
 
         {/* Sign Up Link */}
         <div className="mt-8 text-center text-sm text-zinc-400">
           Don't have an account?{" "}
-          <Link href="/sign-up" className="text-violet-400 font-semibold hover:text-violet-300 hover:underline transition">
+          <Link href={`/sign-up?redirect=${redirect}`} className="text-violet-400 font-semibold hover:text-violet-300 hover:underline transition">
             Create one
           </Link>
         </div>
 
         {/* Back Link */}
         <div className="mt-4 text-center">
-          <Link href="/" className="text-xs text-zinc-500 hover:text-zinc-400 hover:underline transition">
+          <Link href={'/'} className="text-xs text-zinc-500 hover:text-zinc-400 hover:underline transition">
             ← Back to Home
           </Link>
         </div>

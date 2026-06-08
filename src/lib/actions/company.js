@@ -4,7 +4,7 @@ import { serverMutation } from "../core/serverMutation"
 
 export const createCompany=async(companyData)=>{
 const res= await serverMutation('/company',companyData)
-console.log(res);
+
 return res;
 
 }

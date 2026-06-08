@@ -3,7 +3,7 @@ import JobCard from "./JobCard";
 
 export default async function FeaturedJobs() {
     const data=await getAllJobs();
-    console.log(data);
+  
     
   return (
     <section className="bg-black py-24">

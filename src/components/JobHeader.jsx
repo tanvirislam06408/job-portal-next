@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { FiMapPin, FiClock } from "react-icons/fi";
 
-export default function JobHeader({ jobInfo, companyName }) {
+export default function JobHeader({ jobInfo, companyName,_id }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -39,9 +40,9 @@ export default function JobHeader({ jobInfo, companyName }) {
         transition={{ duration: 0.4, delay: 0.3 }}
         className="relative z-10 flex items-center md:self-center"
       >
-        <button className="w-full md:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium px-8 py-3 rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_8px_30px_rgba(139,92,246,0.45)] active:scale-[0.98]">
+        <Link href={`/jobs/${_id}/apply`} className="w-full md:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium px-8 py-3 rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_8px_30px_rgba(139,92,246,0.45)] active:scale-[0.98]">
           Apply For Job
-        </button>
+        </Link>
       </motion.div>
     </motion.div>
   );

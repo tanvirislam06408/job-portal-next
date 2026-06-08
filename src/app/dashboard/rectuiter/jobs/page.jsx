@@ -7,7 +7,7 @@ const RecruiterJobs = async() => {
     const user= await getUserSession();
     
     const res=await getCompanyJobs(user?.id)
-    console.log(res);
+  
     
     return (
         <div>
