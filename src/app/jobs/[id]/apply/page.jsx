@@ -1,11 +1,16 @@
 import NotAuthorized from '@/components/NotAuthorized';
+import { getSingleJob } from '@/lib/api/job';
 import { getUserSession } from '@/lib/core/session';
 import { redirect } from 'next/navigation';
+import JobApply from './JobApply';
 
 
 const ApplyPage = async({params}) => {
     const {id}=await params;
     const user=await getUserSession();
+    const jobsData=await getSingleJob(id);
+
+
     if(!user){
         redirect(`/login?redirect=/jobs/${id}/apply`)
     }
@@ -16,9 +21,7 @@ const ApplyPage = async({params}) => {
     }
     
     return (
-        <div>
-            apply : {id}
-        </div>
+        <JobApply jobsData={jobsData} applicant={user}/>
     );
 };
 

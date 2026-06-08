@@ -12,3 +12,4 @@ export const createJobs = async (jobsData) => {
     return data;
     
 }
+
