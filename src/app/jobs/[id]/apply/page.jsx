@@ -4,6 +4,7 @@ import { getUserSession } from '@/lib/core/session';
 import { redirect } from 'next/navigation';
 import JobApply from './JobApply';
 import { serverFetch } from '@/lib/core/serverMutation';
+import { getPlanById } from '@/lib/api/plans';
 
 
 const ApplyPage = async({params}) => {
@@ -11,6 +12,9 @@ const ApplyPage = async({params}) => {
     const user=await getUserSession();
     const jobsData=await getSingleJob(id);
         const getJobApplications=await serverFetch(`/job-application?jobId=${user?.id}`)
+
+       const getPlansById=await getPlanById(user?.plans || 'seeker_free');
+       console.log(getPlansById);
        
 
     if(!user){
@@ -23,7 +27,7 @@ const ApplyPage = async({params}) => {
     }
     
     return (
-        <JobApply jobsData={jobsData} applicant={user} getJobApplications={getJobApplications}/>
+        <JobApply getPlansById={getPlansById} jobsData={jobsData} applicant={user} getJobApplications={getJobApplications}/>
     );
 };
 

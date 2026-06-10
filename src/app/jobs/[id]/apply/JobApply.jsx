@@ -16,7 +16,7 @@ import {
 } from "@heroui/react";
 import { applyJob } from "@/lib/actions/applications";
 
-const JobApply = ({ jobsData, applicant,getJobApplications }) => {
+const JobApply = ({ jobsData, applicant,getJobApplications,getPlansById:plan }) => {
     
     const [resumeLink, setResumeLink] = useState("");
     const [coverLetter, setCoverLetter] = useState("");
@@ -25,10 +25,8 @@ const JobApply = ({ jobsData, applicant,getJobApplications }) => {
     const [expectedSalary, setExpectedSalary] = useState("");
     const [portfolioLink, setPortfolioLink] = useState("");
     const [startDate, setStartDate] = useState("");
-    const plan = {
-        applications: 3,
-        plan_type: 'free'
-    }
+   
+
 
     const pricingPlans = [
         {
@@ -117,7 +115,7 @@ const JobApply = ({ jobsData, applicant,getJobApplications }) => {
         }
     };
 
-    const exceeded = getJobApplications.length >= plan.applications;
+    const exceeded = getJobApplications.length >= plan.maxApplied;
 
     return (
         <div className="max-w-4xl mx-auto my-10 px-4">
@@ -126,7 +124,7 @@ const JobApply = ({ jobsData, applicant,getJobApplications }) => {
                     <div className="text-center mb-10">
                         <h1 className="text-3xl font-bold tracking-tight">Upgrade Your Plan</h1>
                         <p className="text-default-500 mt-2 max-w-lg mx-auto">
-                            You&apos;ve used all {plan.applications} free applications this month. Choose a plan to keep applying.
+                            You have used all {plan.maxApplied} free applications this month. Choose a plan to keep applying.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
@@ -172,7 +170,7 @@ const JobApply = ({ jobsData, applicant,getJobApplications }) => {
                 </div>
             ) : (
                 <>
-                    <h1 className="my-2 font-semibold text-center">You applied {getJobApplications.length} of {plan.applications}</h1>
+                    <h1 className="my-2 font-semibold text-center">You applied {getJobApplications.length} of {plan.maxApplied}</h1>
                     <Card className="shadow-sm border border-default-100">
                         <Card.Header className="flex flex-col items-start gap-1 px-6 pt-6">
                             <h1 className="text-2xl font-bold tracking-tight">Apply for {jobsData.jobInfo.title}</h1>

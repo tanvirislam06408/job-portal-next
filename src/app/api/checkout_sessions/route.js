@@ -14,10 +14,10 @@ export async function POST(request) {
     const planId = formData.get('pricing_id');
 
     const pricingId = PLAN_PRICE_ID[planId]
-    console.log(pricingId);
+    
 
 
-  const user=await getUserSession();
+    const user = await getUserSession();
 
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
@@ -31,8 +31,10 @@ export async function POST(request) {
           price: pricingId,
           quantity: 1,
         },
+
       ],
       mode: 'subscription',
+      metadata: { planId },
       success_url: `${origin}/success/?session_id={CHECKOUT_SESSION_ID}`,
     });
     return NextResponse.redirect(session.url, 303)
