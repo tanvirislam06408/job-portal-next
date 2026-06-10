@@ -23,12 +23,22 @@ const navItems = [
     },
 ]
 
+
+
+
+
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const { data: session, isPending } = useSession();
-
-    
     const user = session?.user
+
+    const dashboardLinks = {
+        seeker: '/dashboard/seeker',
+        recruiter: '/dashboard/rectuiter'
+    }
+
+
+
     const router = useRouter()
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const dropdownRef = useRef(null)
@@ -60,6 +70,26 @@ export default function Navbar() {
 
     const initial = user?.name ? user.name.charAt(0).toUpperCase() : "?"
 
+
+        if(isPending){
+        return <p>loading</p>
+    }
+
+    const items=[...navItems]
+
+
+    if (user?.email) {
+        items.push(
+            {
+                label: 'Dashboard',
+                href: dashboardLinks[user?.role || 'seeker']
+            }
+        )
+    }
+    
+
+
+
     return (
         <header className="relative z-50 bg-black/50 backdrop-blur-xl border-b border-white/10 py-3">
             <div className="px-4">
@@ -81,7 +111,7 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center gap-3 ml-auto border rounded-[24px] py-3 px-4 md:px-8 border-white/10 bg-[#111111]/90">
-                        {navItems.map(item => (
+                        {items.map(item => (
                             <Link
                                 key={item.label}
                                 href={item.href}
@@ -163,7 +193,7 @@ export default function Navbar() {
                 {isOpen && (
                     <div className="mt-3 rounded-3xl border border-white/10 bg-[#111111]/95 p-4 backdrop-blur-xl lg:hidden">
                         <div className="flex flex-col gap-2">
-                            {navItems.map(item => (
+                            {items.map(item => (
                                 <Link
                                     key={item.label}
                                     href={item.href}

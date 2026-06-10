@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Button, Chip, Table } from "@heroui/react";
-import { FiEye, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiEye, FiEdit2, FiTrash2, FiBriefcase } from "react-icons/fi";
 
 const statusColorMap = {
   active: "success",
@@ -53,6 +53,25 @@ export default function JobsTable({ jobs }) {
     });
   }, [jobs, sortDescriptor]);
 
+  if (!jobs || jobs.length === 0) {
+    return (
+      <div className="container mx-auto mt-6">
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="w-16 h-16 rounded-full bg-default-100 flex items-center justify-center mb-4">
+            <FiBriefcase size={28} className="text-default-500" />
+          </div>
+          <h3 className="text-lg font-semibold text-default-900 mb-1">No jobs posted yet</h3>
+          <p className="text-default-500 text-sm mb-6">Create your first job posting to start receiving applications.</p>
+          <Link href="/dashboard/rectuiter/jobs/new">
+            <Button color="primary" size="md">
+              Create Job
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto mt-6">
       <Table>
@@ -76,10 +95,7 @@ export default function JobsTable({ jobs }) {
             <Table.Column id="actions">ACTIONS</Table.Column>
           </Table.Header>
 
-          <Table.Body
-            items={sortedJobs}
-            renderEmptyState={() => "No jobs found"}
-          >
+          <Table.Body items={sortedJobs}>
             {(job) => (
               <Table.Row id={job._id}>
                 <Table.Cell>
