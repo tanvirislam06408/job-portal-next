@@ -19,7 +19,7 @@ export default function SignupPage() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/';
 
-  
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -95,13 +95,14 @@ export default function SignupPage() {
     if (!validateForm()) return;
 
     setLoading(true);
-
+    const plans = role === 'seeker' ? 'seeker_free' : 'recruiter_free';
     try {
       await signUp.email({
         email: formData.email,
         password: formData.password,
         name: formData.name,
         role: role,
+        plans: plans,
         callbackURL: redirect,
       }, {
         onRequest: () => {
