@@ -195,6 +195,7 @@ export default function CompanyPage({recruiter}) {
       website: fullWebsite,
       location,
       employeeRange,
+      status: companies?.status ? companies.status : 'pending',
       logo: logoUrl || "https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=150", // fallback default
       status: isEdit ? companies[selectedIndex]?.status : "pending",
       createdAt: isEdit ? companies[selectedIndex]?.createdAt : timestamp,

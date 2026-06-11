@@ -7,8 +7,11 @@ import JobOverviewSidebar from '@/components/JobOverviewSidebar';
 
 const JobsDetailsPage = async ({ params }) => {
     const { id } = await params;
+    console.log('params',id);
+    
     const jobData = await getSingleJob(id);
-
+    console.log(jobData);
+    
     if (!jobData) {
         return (
             <div className="flex justify-center items-center min-h-[70vh] bg-black">

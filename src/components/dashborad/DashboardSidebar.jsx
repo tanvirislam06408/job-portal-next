@@ -8,11 +8,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { useSession } from "@/lib/auth-client";
+import {
+  FaTachometerAlt,
+  FaUsers,
+  FaBuilding,
+  FaBriefcase,
+  FaMoneyBillWave,
+  FaCog,
+} from "react-icons/fa";
+
+
 
 export function DashboardSidebar() {
   const router = useRouter();
-  const { data : session ,isPending} = useSession();
-  if(isPending){
+  const { data: session, isPending } = useSession();
+  if (isPending) {
     return <p>loading</p>
   }
 
@@ -58,14 +68,53 @@ export function DashboardSidebar() {
   ];
 
 
+
+  const adminNavItems = [
+    {
+      icon: FaTachometerAlt,
+      label: "Dashboard",
+      href: "/dashboard",
+    },
+    {
+      icon: FaUsers,
+      label: "Users",
+      href: "/dashboard/users",
+    },
+    {
+      icon: FaBuilding,
+      label: "Companies",
+      href: "/dashboard/admin/companies",
+    },
+    {
+      icon: FaBriefcase,
+      label: "Jobs",
+      href: "/dashboard/jobs",
+    },
+    {
+      icon: FaMoneyBillWave,
+      label: "Payments",
+      href: "/dashboard/payments",
+    },
+    {
+      icon: FaCog,
+      label: "Settings",
+      href: "/dashboard/settings",
+    },
+  ];
+
+
+
+
+
   const navLinksMap = {
     seeker: seekerNavItems,
-    recruiter: recruiterNavItems
+    recruiter: recruiterNavItems,
+    admin: adminNavItems
   }
 
 
-  const navItems = navLinksMap[session?.user?.role]
- 
+  const navItems = navLinksMap[session?.user?.role || 'seeker']
+
 
 
 
