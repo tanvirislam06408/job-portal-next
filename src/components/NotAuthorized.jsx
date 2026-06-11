@@ -2,7 +2,12 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { FiLock } from "react-icons/fi";
 
-export default function NotAuthorized() {
+export default function NotAuthorized({
+  title = "Access Denied",
+  description = "This page is only available for job seekers.",
+  actionLabel = "Back to Home",
+  actionHref = "/",
+}) {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
@@ -11,16 +16,16 @@ export default function NotAuthorized() {
         </div>
 
         <h2 className="text-2xl font-bold text-white mb-2">
-          Access Denied
+          {title}
         </h2>
 
         <p className="text-zinc-400 mb-6">
-          This page is only available for job seekers.
+          {description}
         </p>
 
-        <Link href="/">
+        <Link href={actionHref}>
           <Button color="primary">
-            Back to Home
+            {actionLabel}
           </Button>
         </Link>
       </div>

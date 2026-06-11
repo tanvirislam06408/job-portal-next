@@ -14,8 +14,7 @@ const ApplyPage = async({params}) => {
         const getJobApplications=await serverFetch(`/job-application?jobId=${user?.id}`)
 
        const getPlansById=await getPlanById(user?.plans || 'seeker_free');
-       console.log(getPlansById);
-       
+        
 
     if(!user){
         redirect(`/login?redirect=/jobs/${id}/apply`)
