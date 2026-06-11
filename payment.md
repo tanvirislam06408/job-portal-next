@@ -171,11 +171,4 @@ NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 
 ---
 
-## Known Gaps & Issues
 
-1. **No webhook handler** — Stripe events (`checkout.session.completed`, `invoice.paid`, `customer.subscription.updated`, etc.) are not handled. If the user closes the browser before the success page loads, the subscription may not be activated.
-2. **No subscription management** — No cancel, upgrade, downgrade, or customer portal flow exists.
-3. **Duplicate price IDs** — `recruiter_growth` and `recruiter_Enterprise` map to the same Stripe Price ID (`price_1TgbKv9iO2gE4LuufvWD9MnL`), likely a bug.
-4. **Unused publishable key** — `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` is in `.env` but never referenced in code.
-5. **External backend dependency** — Subscription persistence relies on a separate backend at `http://localhost:5000` that is not part of this repository.
-6. **No failed payment handling** — There is no retry or notification logic for failed payments.
