@@ -57,7 +57,8 @@ export default function CompanyPage({recruiter}) {
   const modalState = useOverlayState();
   const [companies, setCompanies] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
-
+  console.log(companies);
+  
   // Form states
   const [name, setName] = useState("");
   const [industry, setIndustry] = useState(null);
@@ -69,9 +70,6 @@ export default function CompanyPage({recruiter}) {
 
   const [uploading, setUploading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-
-  // Simulated status control (for dev review of Approved/Rejected/Pending styling)
-  const [simulatedStatus, setSimulatedStatus] = useState("pending");
 
   // Prefill modal fields for editing (accepts index)
   const handleOpenEdit = (index) => {
@@ -106,12 +104,13 @@ export default function CompanyPage({recruiter}) {
 
 // get the company profile
   useEffect(() => {
+    if (!recruiter?.id) return;
+
     const fetchCompany = async () => {
       try {
         const data = await getCompanyData(recruiter.id);
         if (data) {
           setCompanies(Array.isArray(data) ? data : [data]);
-          setSimulatedStatus((data && data.status) || (Array.isArray(data) && data[0]?.status) || "pending");
         }
       } catch (error) {
         console.error("Failed to fetch company data:", error);
@@ -120,7 +119,7 @@ export default function CompanyPage({recruiter}) {
     };
 
     fetchCompany();
-  }, []);
+  }, [recruiter?.id]);
   
 
 
@@ -195,7 +194,6 @@ export default function CompanyPage({recruiter}) {
       website: fullWebsite,
       location,
       employeeRange,
-      status: companies?.status ? companies.status : 'pending',
       logo: logoUrl || "https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=150", // fallback default
       status: isEdit ? companies[selectedIndex]?.status : "pending",
       createdAt: isEdit ? companies[selectedIndex]?.createdAt : timestamp,
@@ -217,13 +215,12 @@ export default function CompanyPage({recruiter}) {
       setCompanies((prev) => prev.map((it, i) => (i === selectedIndex ? companyData : it)));
     } else {
       setCompanies((prev) => [companyData, ...prev]);
-      setSimulatedStatus("pending");
     }
     modalState.close();
   };
 
   const getStatusDetails = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
       case "approved":
         return {
           className: "border-emerald-500/20 text-emerald-400 bg-emerald-950/20",
@@ -243,6 +240,10 @@ export default function CompanyPage({recruiter}) {
           label: "Pending Review",
         };
     }
+  };
+
+  const getCompanyKey = (company, index) => {
+    return company?._id?.$oid ?? company?._id ?? `${company?.name || "company"}-${index}`;
   };
 
   return (
@@ -277,17 +278,20 @@ export default function CompanyPage({recruiter}) {
             </Card>
           </div>
         ) : (
-          companies.map((company, idx) => (
+          companies.map((company, idx) => {
+            const statusDetails = getStatusDetails(company.status);
+
+            return (
             /* --- COMPANY PROFILE VIEW --- */
-            <Card key={company._id ?? idx} className="bg-zinc-950/40 border border-zinc-850 backdrop-blur-xl rounded-3xl overflow-hidden mb-6 shadow-2xl hover:border-violet-500/10 transition-all duration-500">
+            <Card key={getCompanyKey(company, idx)} className="bg-zinc-950/40 border border-zinc-850 backdrop-blur-xl rounded-3xl overflow-hidden mb-6 shadow-2xl hover:border-violet-500/10 transition-all duration-500">
             {/* Header / Cover Graphic */}
               <div className="relative h-36 bg-gradient-to-r from-violet-950/40 via-indigo-950/40 to-zinc-900/60 border-b border-zinc-900">
               {/* Status Badge */}
               <div className="absolute top-4 right-4 z-10">
-                <Chip className={`px-3 py-1.5 text-xs font-semibold rounded-full border ${getStatusDetails(company.status || simulatedStatus).className}`}>
+                <Chip className={`px-3 py-1.5 text-xs font-semibold rounded-full border ${statusDetails.className}`}>
                   <Chip.Label className="flex items-center">
-                    {getStatusDetails(company.status || simulatedStatus).icon}
-                    {getStatusDetails(company.status || simulatedStatus).label}
+                    {statusDetails.icon}
+                    {statusDetails.label}
                   </Chip.Label>
                 </Chip>
               </div>
@@ -305,7 +309,7 @@ export default function CompanyPage({recruiter}) {
                 </Avatar>
               </div>
 
-              {/* Action Buttons & Simulators */}
+              {/* Action Buttons */}
               <div className="pt-16 flex flex-wrap items-center justify-between gap-6 border-b border-zinc-900 pb-6">
                 <div>
                   <h2 className="text-3xl font-extrabold text-white tracking-tight">{company.name}</h2>
@@ -315,46 +319,6 @@ export default function CompanyPage({recruiter}) {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4">
-                  {/* SIMULATOR (DEV PREVIEW TOOL) */}
-                  <div className="bg-zinc-900/60 border border-zinc-800/60 rounded-2xl p-2 flex items-center gap-2">
-                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider px-2">Simulate Status:</span>
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => {
-                          setCompanies(prev => prev.map((it, i) => (i === idx ? { ...it, status: "pending" } : it)));
-                        }}
-                        className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${company.status === "pending"
-                          ? "bg-yellow-500/10 border border-yellow-500/20 text-yellow-500"
-                          : "text-zinc-500 hover:text-zinc-300"
-                          }`}
-                      >
-                        Pending
-                      </button>
-                      <button
-                        onClick={() => {
-                          setCompanies(prev => prev.map((it, i) => (i === idx ? { ...it, status: "approved" } : it)));
-                        }}
-                        className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${company.status === "approved"
-                          ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
-                          : "text-zinc-500 hover:text-zinc-300"
-                          }`}
-                      >
-                        Approve
-                      </button>
-                      <button
-                        onClick={() => {
-                          setCompanies(prev => prev.map((it, i) => (i === idx ? { ...it, status: "rejected" } : it)));
-                        }}
-                        className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${company.status === "rejected"
-                          ? "bg-rose-500/10 border border-rose-500/20 text-rose-400"
-                          : "text-zinc-500 hover:text-zinc-300"
-                          }`}
-                      >
-                        Reject
-                      </button>
-                    </div>
-                  </div>
-
                   <Button
                     variant="bordered"
                     className="border-zinc-850 hover:border-zinc-750 bg-zinc-900/40 text-white font-medium rounded-2xl hover:bg-zinc-900/80 px-4 py-2 transition-all flex items-center gap-2"
@@ -413,7 +377,8 @@ export default function CompanyPage({recruiter}) {
               </div>
             </div>
           </Card>
-          ))
+            );
+          })
         )}
       </div>
 

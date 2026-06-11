@@ -10,7 +10,10 @@ import {
   FiMapPin,
   FiSearch,
   FiUsers,
+  FiXCircle,
 } from "react-icons/fi";
+import { updateCompaniesApproval } from "@/lib/api/company";
+import { toast } from "@heroui/react";
 
 const statusStyles = {
   approved: {
@@ -68,6 +71,24 @@ export default function CompaniesReviewClient({ companies = [] }) {
   const [activeStatus, setActiveStatus] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [searchTerm, setSearchTerm] = useState("");
+
+  const handleApproved = async (companyId) => {
+
+    const result = await updateCompaniesApproval(companyId, { status: 'Approved' })
+    if(result.matchedCount > 0){
+      toast.success('Approved Successfully')
+    }
+
+
+  };
+
+  const handleRejected = async (companyId) => {
+  const result = await updateCompaniesApproval(companyId, { status: 'Rejected' })
+    if(result.matchedCount > 0){
+      toast.success('Reject Successfully')
+    }
+
+  };
 
   const counts = useMemo(() => {
     return companies.reduce(
@@ -154,11 +175,10 @@ export default function CompaniesReviewClient({ companies = [] }) {
                 key={option.id}
                 type="button"
                 onClick={() => setActiveStatus(option.id)}
-                className={`rounded-lg border px-4 py-2 text-sm font-medium transition duration-200 ${
-                  activeStatus === option.id
+                className={`rounded-lg border px-4 py-2 text-sm font-medium transition duration-200 ${activeStatus === option.id
                     ? "border-violet-500/40 bg-violet-500/15 text-violet-200 shadow-[0_0_24px_rgba(139,92,246,0.12)]"
                     : "border-zinc-800 bg-zinc-950/60 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900 hover:text-white"
-                }`}
+                  }`}
               >
                 {option.label}
               </button>
@@ -285,12 +305,22 @@ export default function CompaniesReviewClient({ companies = [] }) {
                             Website
                           </a>
                         )}
-                        {status === "approved" && (
-                          <span className="inline-flex h-9 items-center gap-2 rounded-lg bg-emerald-500/15 px-3 text-sm font-medium text-emerald-200 ring-1 ring-emerald-500/20">
-                            <FiCheckCircle />
-                            Approved
-                          </span>
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleApproved(company._id)}
+                          className="inline-flex h-9 items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 text-sm font-medium text-emerald-200 transition hover:border-emerald-500/40 hover:bg-emerald-500/15"
+                        >
+                          <FiCheckCircle />
+                          Approved
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRejected(company._id)}
+                          className="inline-flex h-9 items-center gap-2 rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 text-sm font-medium text-rose-200 transition hover:border-rose-500/40 hover:bg-rose-500/15"
+                        >
+                          <FiXCircle />
+                          Rejected
+                        </button>
                       </div>
                     </motion.article>
                   );

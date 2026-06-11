@@ -1,12 +1,12 @@
 'use server'
 
-import { serverFetch } from "../core/serverMutation";
+import { revalidatePath } from "next/cache";
+import { serverFetch, serverMutation } from "../core/serverMutation";
 import { getUserSession } from "../core/session";
 
 export const getCompanyData = async (recruiterId) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/company?recruiterId=${recruiterId}`);
   const resData = await res.json();
-
   return resData;
 };
 
@@ -18,5 +18,11 @@ export const getLoggedInRecruiterCompany = async () => {
 }
 
 export const getAllCompanies = async () => {
-  return await serverFetch('/company')
+  return await serverFetch('/api/company')
+}
+
+export const updateCompaniesApproval = async (id, data) => {
+  const res = await serverMutation(`/api/companies/${id}`, data, 'PATCH');
+  revalidatePath('/dashboard/admin/companies')
+  return res;
 }

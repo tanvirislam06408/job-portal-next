@@ -136,10 +136,8 @@ export default function JobCard({ cardData }) {
         )}
 
        <div>
-         <Link
-        href={`/jobs/${cardData._id}`}
-          size="sm"
-          radius="full"
+         <Link href={`/jobs/${cardData._id}`}
+         
           className=" flex items-center py-3 rounded-2xl bg-zinc-800  text-zinc-200  font-medium  px-4 hover:bg-primary hover:text-white  transition-all  duration-300 shadow-sm
           "
         >
