@@ -10,15 +10,29 @@ export const getUserSession = async () => {
     return session?.user || null;
 }
 
+
+export const getTokenSession = async () => {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    const sessionToken = session?.session?.token
+    return sessionToken || null
+
+
+}
+
+
+
 export const checkUserAuthorize = async (role) => {
     const user = await getUserSession();
-    
-    if(!user){
+
+    if (!user) {
         redirect('/login')
     }
-    
+
     if (user?.role !== role) {
         return redirect('/unauthorize')
     }
-    
+
 }

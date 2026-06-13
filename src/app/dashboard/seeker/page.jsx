@@ -1,11 +1,11 @@
-import { serverFetch } from '@/lib/core/serverMutation';
+import { protectRoute, serverFetch } from '@/lib/core/serverMutation';
 import { getUserSession } from '@/lib/core/session';
 import ApplicationsTable from '@/components/dashborad/ApplicationsTable';
 import React from 'react';
 
 const SeekerDashboard = async() => {
     const user=await getUserSession();
-    const getJobApplications=await serverFetch(`/applied-jobs?applicantId=${user?.id}`)
+    const getJobApplications=await protectRoute(`/applied-jobs?applicantId=${user?.id}`)
     console.log('jobs application',getJobApplications);
     
     const applications = Array.isArray(getJobApplications)
