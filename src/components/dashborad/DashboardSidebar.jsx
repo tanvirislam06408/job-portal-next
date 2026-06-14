@@ -78,7 +78,7 @@ export function DashboardSidebar() {
     {
       icon: FaUsers,
       label: "Users",
-      href: "/dashboard/users",
+      href: "/dashboard/admin/users",
     },
     {
       icon: FaBuilding,
