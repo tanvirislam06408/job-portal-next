@@ -1,9 +1,25 @@
-import React from 'react';
-import { getUsersList } from '@/lib/api/users';
+'use client';
 
-const AdminUsersPage = async () => {
-    const data = await getUsersList();
-    const users = data.users;
+import React, { useState, useEffect } from 'react';
+import { authClient } from '@/lib/auth-client';
+
+const AdminUsersPage = () => {
+    const [users, setUsers] = useState([]);
+    const [confirm, setConfirm] = useState(null);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const res = await authClient.admin.listUsers();
+            setUsers(res.data?.users || []);
+        };
+        fetchUsers();
+    }, []);
+
+    const handleRoleChange = async (userId, newRole) => {
+        await authClient.admin.setRole({ userId, role: newRole });
+        setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: newRole } : u));
+        setConfirm(null);
+    };
 
     return (
         <div className="p-8 bg-[#0f0f0f] text-white min-h-screen">
@@ -74,8 +90,23 @@ const AdminUsersPage = async () => {
                                         {user.banned ? 'Suspended' : 'Active'}
                                     </span>
                                 </td>
-                                <td className="p-4 text-right text-sm">
-                                    <button className="text-red-500 hover:underline">
+                                <td className="p-4 text-right text-sm flex gap-2 justify-end items-center">
+                                    <div className="flex gap-1">
+                                        {['admin', 'recruiter', 'seeker'].map(role => (
+                                            <button
+                                                key={role}
+                                                onClick={() => user.role !== role && setConfirm({ user, role })}
+                                                className={`px-2 py-1 rounded text-xs font-medium capitalize ${
+                                                    user.role === role
+                                                        ? 'bg-blue-600 text-white cursor-default'
+                                                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                                }`}
+                                            >
+                                                {role}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <button className="text-red-500 hover:underline text-xs ml-2">
                                         {user.banned ? 'Activate' : 'Suspend'}
                                     </button>
                                 </td>
@@ -97,6 +128,32 @@ const AdminUsersPage = async () => {
                     </div>
                 </div>
             </div>
+            {confirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+                    <div className="bg-[#1a1a1a] border border-gray-700 rounded-lg p-6 w-full max-w-sm shadow-xl">
+                        <h3 className="text-lg font-semibold mb-2">Confirm Role Change</h3>
+                        <p className="text-gray-400 text-sm mb-6">
+                            Change <span className="text-white font-medium">{confirm.user.name}</span>&#39;s role
+                            from <span className="text-yellow-400 capitalize">{confirm.user.role}</span> to
+                            <span className="text-blue-400 capitalize"> {confirm.role}</span>?
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setConfirm(null)}
+                                className="px-4 py-2 rounded text-sm bg-gray-700 hover:bg-gray-600"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => handleRoleChange(confirm.user.id, confirm.role)}
+                                className="px-4 py-2 rounded text-sm bg-blue-600 hover:bg-blue-500"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
